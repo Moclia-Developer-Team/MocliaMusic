@@ -94,9 +94,9 @@ int main()
 					return;
 				}
 
-				if (plain == "/MusicHelp")
+				if (plain == "*MusicHelp")
 				{
-					const string MocMuse_Ver = "1.0.0Release";
+					const string MocMuse_Ver = "1.0.0Release ";
 					const string MocMuse_Info = "MocliaMusic by STASWIT Version"
 						+ MocMuse_Ver;
 					const string Platform = "for Mirai-Http";
