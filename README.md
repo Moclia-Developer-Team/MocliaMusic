@@ -25,11 +25,11 @@
 
 本项目采用VCPKG和Git Submodule进行第三方库管理，需要的库列表如下：
 
-> git submodule:
-> > Mirai-Cpp
-> vcpkg:
-> > cpr
-> > RapidJson
+> git submodule:  
+> > Mirai-Cpp  
+> vcpkg:  
+> > cpr  
+> > RapidJson  
 
 请自行确认系统内是否有相关第三方库，否则将无法编译。
 
