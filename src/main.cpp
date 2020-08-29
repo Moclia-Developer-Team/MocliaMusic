@@ -1,59 +1,86 @@
-// 注意: 本项目的所有源文件都必须是 UTF-8 编码
-
-// 这是一个“反撤回”机器人
-// 在群里回复 “/anti-recall enabled.” 或者 “撤回没用” 之后
-// 如果有人在群里撤回，那么机器人会把撤回的内容再发出来
-
 #include <iostream>
 #include <map>
-#include <mirai.h>
-#include "myheader.h"
+#include <string>
+#include <sstream>
+
+#include <mirai/mirai.h>
+
+#include "GlobalHeader.h"
+#include "JsonProcess.h"
+#include "HttpProcess.h"
+#include "NeteaseMusicProcess.h"
+
+using namespace std;
+using namespace Cyan;
+using namespace cpr;
+using namespace rapidjson;
 
 int main()
 {
-	using namespace std;
-	using namespace Cyan;
-
 #if defined(WIN32) || defined(_WIN32)
 	// 切换代码页，让 CMD 可以显示 UTF-8 字符
 	system("chcp 65001");
 #endif
 
-	MiraiBot bot("127.0.0.1", 8080);
+
+	string host = JsonReaderString(".\\BotConfig.json","/host");
+	int port = JsonReaderInt(".\\BotConfig.json","/port");
+	string qqNum = JsonReaderString(".\\BotConfig.json", "/qq");
+	long qqLong = stol(qqNum);
+	QQ_t qq = static_cast<QQ_t>(qqLong);
+	string auth = JsonReaderString(".\\BotConfig.json", "/authKey");
+
+	MiraiBot bot(host, port);
 	while (true)
 	{
 		try
 		{
-			bot.Auth("InitKeyVl0CEUzZ", 211000000_qq);
+			bot.Auth(auth, qq);
 			break;
 		}
 		catch (const std::exception& ex)
 		{
 			cout << ex.what() << endl;
 		}
-		MiraiBot::SleepSeconds(1);
+		MiraiBot::SleepSeconds(10);
 	}
-	cout << "Bot Working..." << endl;
+	cout << "MocliaMusic正在运行中……" << endl;
 
 	map<GID_t, bool> groups;
 
-	bot.On<GroupMessage>(
-		[&](GroupMessage m)
+	bot.On<Message>(
+		[&](Message m)
 		{
 			try
 			{
 				string plain = m.MessageChain.GetPlainText();
-				if (plain == "/anti-recall enabled." || plain == "撤回没用")
+				if (plain.find("网易点歌") != string::npos)
 				{
-					groups[m.Sender.Group.GID] = true;
-					m.Reply(MessageChain().Plain("撤回也没用，我都看到了"));
+					string MusicName = plain.substr(12);
+					string app = NeteaseMusic(MusicName);
+					m.Reply(MessageChain().App(app));
 					return;
 				}
-				if (plain == "/anti-recall disabled." || plain == "撤回有用")
+
+				if (plain == "/MusicHelp")
 				{
-					groups[m.Sender.Group.GID] = false;
-					m.Reply(MessageChain().Plain("撤回有用"));
-					return;
+					const string MocMuse_Ver = "1.0.0Release";
+					const string MocMuse_Info = "MocliaMusic by STASWIT Version"
+						+ MocMuse_Ver;
+					const string Platform = "for Mirai-Http";
+					string CI;
+#ifdef _MSC_VER
+					CI = " [MSVC " + to_string(_MSC_VER) + " "
+						+ __DATE__ + " " + __TIME__ + "]"; //编译信息（complite info）
+#endif // _MSC_VER
+#ifdef __GNUC__
+					CI = " [GNUC " + to_string(__GNUC__) + " "
+						+ __DATE__ + " " + __TIME__ + "]"; //编译信息（complite info）
+#endif // __GNUC__
+
+					const string MocMuse_FullInfo = MocMuse_Info + 
+						Platform + CI;
+					m.Reply(MessageChain().Plain(MocMuse_FullInfo));
 				}
 			}
 			catch (const std::exception& ex)
@@ -61,24 +88,6 @@ int main()
 				cout << ex.what() << endl;
 			}
 		});
-
-
-	bot.On<GroupRecallEvent>(
-		[&](GroupRecallEvent gm)
-		{
-			try
-			{
-				if (!groups[gm.Group.GID]) return;
-				auto recalled_mc = bot.GetGroupMessageFromId(gm.MessageId).MessageChain;
-				auto mc = "刚刚有人撤回了: " + recalled_mc;
-				bot.SendMessage(gm.Group.GID, mc);
-			}
-			catch (const std::exception& ex)
-			{
-				cout << ex.what() << endl;
-			}
-		});
-
 
 	bot.EventLoop();
 
