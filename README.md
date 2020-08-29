@@ -1,55 +1,38 @@
-# mirai-cpp-template
+### MocliaMusic，一个基于mirai-cpp和mirai-api-http的点歌插件
 
- mirai-cpp 机器人的开发模板(CMake)。
- 希望可以降低 C++ 新手入门编写 mirai 机器人的难度。
+> 目前仅支持网易云音乐，其他音乐服务将在未来添加。
 
-## 使用方法
+#### 使用说明
 
-使用以下指令克隆本仓库
+~/MusicHelp~ MocliaMusic的帮助页面。
+~网易点歌[曲名]~在网易云进行点歌
 
-```bash
-git clone https://github.com/cyanray/mirai-cpp-template.git --recursive
-cd mirai-cpp-template
-# 更新 mirai-cpp 到最新
-git submodule update --init --force --remote
-```
+#### 运行前配置
 
-然后使用 Visual Studio 或 Visual Studio Code 直接打开整个文件夹即可。
+在同目录下的BotConfig.json下填写以下内容
+~~~
+//在正式使用中注释必须删除。
+{
+    "host":"", //你的mirai-api-http ip地址
+    "port":, // mirai-api-http的端口号
+    "qq":"10000_qq",// 机器人qq，后面必须加_qq
+    "authKey":""// mirai-api-http的authKey
+}
+~~~
+随后双击MocliaMusic.exe运行即可。
 
-本模板编译目标为可执行文件，其主函数位于 **src/main.cpp** 。
+#### 编译配置
 
-要添加其他 **.cpp** 源文件，不要忘记修改 **CMakeLists.txt**。
+本项目采用VCPKG和Git Submodule进行第三方库管理，需要的库列表如下：
 
-不熟悉 CMake 的话可以趁这个机会学习一下。
+> git submodule:
+> > Mirai-Cpp
+> vcpkg:
+> > cpr
+> > RapidJson
 
-mirai-cpp 的说明文档：[使用说明](https://github.com/cyanray/mirai-cpp/blob/master/doc/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.md)
+请自行确认系统内是否有相关第三方库，否则将无法编译。
 
-## 更新 mirai-cpp 到最新
+#### 其他
 
-直接在 template 项目根目录执行以下指令:
-
-```bash
-# 更新 mirai-cpp 到最新
-git submodule update --init --force --remote
-```
-
-## 编译出 Linux 可执行文件、部署到服务器上
-
-操作方法：
-
-1. 在 WSL 上编译出二进制可执行文件
-2. 把编译出来的二进制可执行文件复制到自己的服务器上
-
-如果你还不了解什么是 **WSL** (**W**indows **S**ubsystem for **L**inux) ，可以趁这个机会学习一下。
-
-使用 Visual Studio 的 CMake 项目可以很轻松的在 WSL 上进行编译。
-
-按照如图所示步骤，创建一个针对 WSL 平台的配置。因为我的 WSL 安装了 GCC 编译器，所以这里选择 **WSL-GCC-Releas**。
-
-![创建WSL-GCC平台配置1](./doc/pic/vs_3.png)
-
-![创建WSL-GCC平台配置2](./doc/pic/vs_configure_linux_project.png)
-
-之后将配置切换到刚刚创建的 WSL 平台配置，重新编译项目，编译出来的二进制文件就在 **[本模板所在的目录]/out/build/WSL-Release/** 目录下了(不出意外的话，它叫做 **my-qqrobot** )。
-
-把这个文件复制到你的 Linux 服务器上，可以直接运行哦！
+本项目目前仅在windows x86_64编译通过，其他系统因vcpkg原因暂未测试，将在未来适配。
