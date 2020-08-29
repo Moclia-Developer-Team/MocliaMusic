@@ -4,7 +4,7 @@
 
 #### 使用说明
 
-~/MusicHelp~ MocliaMusic的帮助页面。
+`/MusicHelp` MocliaMusic的帮助页面。
 ~网易点歌[曲名]~在网易云进行点歌
 
 #### 运行前配置
