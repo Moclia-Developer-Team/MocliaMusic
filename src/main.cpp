@@ -88,7 +88,8 @@ int main()
 				string plain = m.MessageChain.GetPlainText();
 				if (plain.find("网易点歌") != string::npos)
 				{
-					string MusicName = plain.substr(12);
+					string MusicName = plain.substr(strlen("网易点歌"));
+					if (MusicName.empty()) return;
 					string app = NeteaseMusic(MusicName);
 					m.Reply(MessageChain().App(app));
 					return;
