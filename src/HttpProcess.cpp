@@ -34,7 +34,8 @@
 using namespace std;
 using namespace cpr;
 
-string HttpGet(string URL)
+//暂时用不到Get
+/*string HttpGet(string URL)
 {
 	try
 	{
@@ -45,7 +46,7 @@ string HttpGet(string URL)
 	{
 		cout << ex.what() << endl;
 	}
-}
+}*/
 
 string HttpPost(string URL, string PostBody)
 {

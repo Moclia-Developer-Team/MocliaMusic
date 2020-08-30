@@ -89,15 +89,23 @@ int main()
 				if (plain.find("网易点歌") != string::npos)
 				{
 					string MusicName = plain.substr(strlen("网易点歌"));
-					if (MusicName.empty()) return;
-					string app = NeteaseMusic(MusicName);
-					m.Reply(MessageChain().App(app));
-					return;
+					if (MusicName.empty())
+					{
+						m.Reply(MessageChain().Plain(
+							"使用方式：网易点歌[曲名]"));
+						return;
+					}
+					else
+					{
+						string app = NeteaseMusic(MusicName);
+						m.Reply(MessageChain().App(app));
+						return;
+					}
 				}
 
 				if (plain == "*MusicHelp")
 				{
-					const string MocMuse_Ver = "1.0.0Release ";
+					const string MocMuse_Ver = "1.0.0-1 Release ";
 					const string MocMuse_Info = "MocliaMusic by STASWIT Version"
 						+ MocMuse_Ver;
 					const string Platform = "for Mirai-Http";
