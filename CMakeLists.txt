@@ -1,5 +1,6 @@
 # CMake 版本要求 (最低 3.1)
 cmake_minimum_required (VERSION 3.14)
+
 # 项目名称
 project(MocliaMusic)
 # 设置项目的 C++ 标准

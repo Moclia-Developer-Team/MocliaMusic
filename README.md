@@ -15,7 +15,7 @@
 {
     "host":"", //你的mirai-api-http ip地址
     "port":, // mirai-api-http的端口号
-    "qq":"10000_qq",// 机器人qq，后面必须加_qq
+    "qq":10000,// 机器人qq
     "authKey":""// mirai-api-http的authKey
 }
 ~~~
