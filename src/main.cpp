@@ -97,7 +97,14 @@ int main()
 					else
 					{
 						string app = NeteaseMusic(MusicName);
-						m.Reply(MessageChain().App(app));
+						if (app == "Music Not Found")
+						{
+							m.Reply(MessageChain().Plain("云村中没有这首歌哟。"));
+						}
+						else
+						{
+							m.Reply(MessageChain().App(app));
+						}
 						return;
 					}
 				}

@@ -117,7 +117,15 @@ string JsonGetString(const char* Json, char* Path)
 	Document JsonDOM; // 创建RapidJson DOM
 	JsonDOM.ParseStream(JsonStream); // 分析json原始数据并传入DOM
 	Value* JsonValue =  Pointer(Path).Get(JsonDOM); // 获取对应路径的值，并返回
-	return JsonValue->GetString();
+    if (JsonValue == nullptr)
+    {
+        return "empty";
+    }
+    else
+    {
+        return JsonValue->GetString();
+    }
+	
 }
 
 // json数据处理，传出int
@@ -127,7 +135,15 @@ int JsonGetInt(const char* Json, char* Path)
 	Document JsonDOM; // 创建RapidJson DOM
 	JsonDOM.ParseStream(JsonStream); // 分析json原始数据并传入DOM
 	Value* JsonValue = Pointer(Path).Get(JsonDOM); // 获取对应路径的值，并返回
-	return JsonValue->GetInt();
+    if (JsonValue == nullptr)
+    {
+        return -1;
+    }
+    else
+    {
+        return JsonValue->GetInt();
+    }
+	
 }
 
 // 改变输出音乐的json
