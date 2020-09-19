@@ -39,6 +39,11 @@ int JsonGetInt(const char* Json, char* Path);
 string MusicJsonChange(
     const char* Json, const char* Desc, const char* Jumpurl,
     const char* MusicUrl, const char* Preview, const char* Title, int MuseType);
-string JsonReaderString(char* Path, char* point);
-int JsonReaderInt(char* Path, char* point);
+
+
+/*≈‰÷√œÓ∂¡»°*/
+void JsonConfigReader();
+string ConfigReaderString(char* point);
+int ConfigReaderInt(char* IntPoint);
+
 extern const char* MusicJson;

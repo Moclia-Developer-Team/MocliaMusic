@@ -42,8 +42,11 @@
 using namespace std;
 using namespace rapidjson;
 
-string JsonReaderString(char* Path, char* point)
+Document BotConfigDoc;
+
+void JsonConfigReader()
 {
+    char* Path = "./BotConfig.json";
 #ifdef _WIN32
     FILE* Filep = fopen(Path, "rb");
     if (!Filep)
@@ -60,11 +63,14 @@ string JsonReaderString(char* Path, char* point)
 
     char readBuffer[65536];
     FileReadStream read(Filep, readBuffer, sizeof(readBuffer));
+    BotConfigDoc.ParseStream(read);
 
-    Document d;
-    d.ParseStream(read);
+    fclose(Filep);
+}
 
-    Value* v = Pointer(point).Get(d);
+string ConfigReaderString(char* point)
+{
+    Value* v = Pointer(point).Get(BotConfigDoc);
     if (v == nullptr)
     {
         return "empty";
@@ -73,41 +79,19 @@ string JsonReaderString(char* Path, char* point)
     {
         return v->GetString();
     }
-    fclose(Filep);
 }
 
-int JsonReaderInt(char* Path, char* point)
+int ConfigReaderInt(char* IntPoint)
 {
-#ifdef _WIN32
-    FILE* Filep = fopen(Path, "rb");
-    if (!Filep)
-    {
-        Filep = fopen(Path, "wb");
-    }
-#else
-    FILE* Filep = fopen(Path, "r");
-    if (!Filep)
-    {
-        Filep = fopen(Path, "w");
-    }
-#endif // _WIN32
-
-    char readBuffer[65536];
-    FileReadStream read(Filep, readBuffer, sizeof(readBuffer));
-
-    Document d;
-    d.ParseStream(read);
-
-    Value* v = Pointer(point).Get(d);
-    if (v == nullptr)
+    Value* ReaderInt = Pointer(IntPoint).Get(BotConfigDoc);
+    if (ReaderInt == nullptr)
     {
         return -1;
     }
     else
     {
-        return v->GetInt();
+        return ReaderInt->GetInt();
     }
-    fclose(Filep);
 }
 
 // json数据处理，传出string

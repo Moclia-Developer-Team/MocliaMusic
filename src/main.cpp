@@ -49,16 +49,17 @@ using namespace rapidjson;
 
 int main()
 {
+	JsonConfigReader();
 	string host, auth;
 	int port,qqNum;
 #if defined(WIN32) || defined(_WIN32)
 	// 切换代码页，让 CMD 可以显示 UTF-8 字符
 	system("chcp 65001");
 #endif
-	host = JsonReaderString("./BotConfig.json", "/host");
-	port = JsonReaderInt("./BotConfig.json", "/port");
-	qqNum = JsonReaderInt("./BotConfig.json", "/qq");
-	auth = JsonReaderString("./BotConfig.json", "/authKey");
+	host = ConfigReaderString("/host");
+	port = ConfigReaderInt( "/port");
+	qqNum = ConfigReaderInt("/qq");
+	auth = ConfigReaderString("/authKey");
 	QQ_t qqNum_qq = QQ_t(qqNum);
 
 	MiraiBot bot(host, port);
