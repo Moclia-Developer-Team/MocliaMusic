@@ -22,7 +22,9 @@ endif(MSVC)
 
 list(APPEND SOURCES src/logo.rc)
 
-add_executable(${PROJECT_NAME} src/main.cpp "include/JsonProcess.h" "src/JsonProcess.cpp" "src/HttpProcess.cpp" "include/HttpProcess.h" "src/NeteaseMusicProcess.cpp")
+file(GLOB_RECURSE SOURCE_FILES src/*.cpp) # 递归搜索 src 目录中的源文件, 可根据实际情况修改
+
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 # 设置头文件目录
 include_directories(include)
 # 链接 mirai-cpp

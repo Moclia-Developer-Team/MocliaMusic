@@ -25,6 +25,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * -----------------------------------------------------------------------------
  * 功能：点歌的json处理
+ * todo：配置文件自动生成，自动写入。
  */
 #include <iostream>
 #include <string>
@@ -42,7 +43,8 @@
 using namespace std;
 using namespace rapidjson;
 
-Document BotConfigDoc;
+Document BotConfigDoc; // 插件设置
+Document GroupConfigDoc; // 群设置
 
 void JsonConfigReader()
 {
@@ -84,13 +86,13 @@ string ConfigReaderString(char* point)
 int ConfigReaderInt(char* IntPoint)
 {
     Value* ReaderInt = Pointer(IntPoint).Get(BotConfigDoc);
-    if (ReaderInt == nullptr)
+    if (ReaderInt == nullptr) // 如果没有读取到数据返回-1
     {
         return -1;
     }
     else
     {
-        return ReaderInt->GetInt();
+        return ReaderInt->GetInt64();
     }
 }
 
@@ -182,9 +184,7 @@ const char* MusicJson = R"(
 "app": "com.tencent.structmsg",
 "config": {
     "autosize": true,
-    "ctime": 0,
     "forward": true,
-    "token": "6a2658ee487631c2c2d77aa583792dc1",
     "type": "normal"
 },
 "desc": "音乐",

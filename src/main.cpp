@@ -41,6 +41,7 @@
 #include "JsonProcess.h"
 #include "HttpProcess.h"
 #include "NeteaseMusicProcess.h"
+#include "GeneralMessage.h"
 
 using namespace std;
 using namespace Cyan;
@@ -51,7 +52,7 @@ int main()
 {
 	JsonConfigReader();
 	string host, auth;
-	int port,qqNum;
+	int64_t port,qqNum;
 #if defined(WIN32) || defined(_WIN32)
 	// 切换代码页，让 CMD 可以显示 UTF-8 字符
 	system("chcp 65001");
@@ -80,18 +81,24 @@ int main()
 
 	map<GID_t, bool> groups;
 
-	bot.On<Message>(
-		[&](Message m)
+	// 群聊消息处理
+	bot.On<GroupMessage>(
+		[&](GroupMessage gm)
 		{
 			try
 			{
-				string plain = m.MessageChain.GetPlainText();
-				if (plain.find("网易点歌") != string::npos)
+				string plain = gm.MessageChain.GetPlainText();
+				string msg = plain;
+				if (gm.AtMe())
 				{
-					string MusicName = plain.substr(strlen("网易点歌"));
+					msg = plain.substr(1);
+				}
+				if (msg.find("网易点歌") != string::npos)
+				{
+					string MusicName = msg.substr(strlen("网易点歌"));
 					if (MusicName.empty())
 					{
-						m.Reply(MessageChain().Plain(
+						gm.Reply(MessageChain().Plain(
 							"使用方式：网易点歌[曲名]"));
 						return;
 					}
@@ -100,11 +107,52 @@ int main()
 						string app = NeteaseMusic(MusicName);
 						if (app == "Music Not Found")
 						{
-							m.Reply(MessageChain().Plain("云村中没有这首歌哟。"));
+							gm.Reply(MessageChain().Plain("云村中没有这首歌哟。"));
 						}
 						else
 						{
-							m.Reply(MessageChain().App(app));
+							gm.Reply(MessageChain().App(app));
+						}
+						return;
+					}
+				}
+
+				if (msg == "*MusicHelp")
+				{
+					string Help = BotHelp();
+					gm.Reply(MessageChain().Plain(Help));
+				}
+			}
+			catch (const std::exception& ex)
+			{
+				cout << ex.what() << endl;
+			}
+		});
+	bot.On<FriendMessage>(
+		[&](FriendMessage fm)
+		{
+			try
+			{
+				string plain = fm.MessageChain.GetPlainText();
+				if (plain.find("网易点歌") != string::npos)
+				{
+					string MusicName = plain.substr(strlen("网易点歌"));
+					if (MusicName.empty())
+					{
+						fm.Reply(MessageChain().Plain(
+							"使用方式：网易点歌[曲名]"));
+						return;
+					}
+					else
+					{
+						string app = NeteaseMusic(MusicName);
+						if (app == "Music Not Found")
+						{
+							fm.Reply(MessageChain().Plain("云村中没有这首歌哟。"));
+						}
+						else
+						{
+							fm.Reply(MessageChain().App(app));
 						}
 						return;
 					}
@@ -112,25 +160,50 @@ int main()
 
 				if (plain == "*MusicHelp")
 				{
-					const string MocMuse_Ver = "1.0.0-3 Release ";
-					const string MocMuse_Info = "MocliaMusic by STASWIT Version"
-						+ MocMuse_Ver;
-					const string Platform = "for Mirai-Http";
-					string CI;
-#ifdef _MSC_VER
-					CI = " [MSVC " + to_string(_MSC_VER) + " "
-						+ __DATE__ + " " + __TIME__ + "]"; //编译信息（complite info）
-#endif // _MSC_VER
-#ifdef __GNUC__
-					CI = " [GNUC " + to_string(__GNUC__) + " "
-						+ __DATE__ + " " + __TIME__ + "]"; //编译信息（complite info）
-#endif // __GNUC__
+					string Help = BotHelp();
+					fm.Reply(MessageChain().Plain(Help));
+				}
+			}
+			catch (const std::exception& ex)
+			{
+				cout << ex.what() << endl;
+			}
+		});
 
-					const string MocMuse_FullInfo = MocMuse_Info + 
-						Platform + CI;
-					string MocHelp = "可用指令：\n网易点歌[歌名]";
-					string Reply = MocMuse_FullInfo + "\n" + MocHelp;
-					m.Reply(MessageChain().Plain(Reply));
+	bot.On<TempMessage>(
+		[&](TempMessage tm)
+		{
+			try
+			{
+				string plain = tm.MessageChain.GetPlainText();
+				if (plain.find("网易点歌") != string::npos)
+				{
+					string MusicName = plain.substr(strlen("网易点歌"));
+					if (MusicName.empty())
+					{
+						tm.Reply(MessageChain().Plain(
+							"使用方式：网易点歌[曲名]"));
+						return;
+					}
+					else
+					{
+						string app = NeteaseMusic(MusicName);
+						if (app == "Music Not Found")
+						{
+							tm.Reply(MessageChain().Plain("云村中没有这首歌哟。"));
+						}
+						else
+						{
+							tm.Reply(MessageChain().App(app));
+						}
+						return;
+					}
+				}
+
+				if (plain == "*MusicHelp")
+				{
+					string Help = BotHelp();
+					tm.Reply(MessageChain().Plain(Help));
 				}
 			}
 			catch (const std::exception& ex)
