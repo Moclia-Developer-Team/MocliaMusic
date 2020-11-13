@@ -34,6 +34,7 @@
 #include <map>
 #include <string>
 #include <sstream>
+#include <thread>
 
 #include <mirai/mirai.h>
 
@@ -47,6 +48,43 @@ using namespace std;
 using namespace Cyan;
 using namespace cpr;
 using namespace rapidjson;
+
+string input;
+int CommandNum;
+
+void CommandSys()
+{
+	map<string, int> CommandType = {
+		{"q",1},
+		{"about",2}
+	};
+	while (true)
+	{
+		try
+		{
+			cin >> input;
+			CommandNum = CommandType[input];
+			switch (CommandNum)
+			{
+			case 1:
+				cout << "[MocliaMusic] 已结束进程" << endl;
+				exit(0);
+				break;
+			case 2:
+				cout << BotHelp() << endl;
+				break;
+			default:
+				cout << "[MocliaMusic] 指令错误" << endl;
+				break;
+			}
+		}
+		catch (const std::exception& ex)
+		{
+			cout << "[MocliaMusic] " << ex.what() << endl;
+		}
+		
+	}
+}
 
 int main()
 {
@@ -77,7 +115,11 @@ int main()
 		}
 		MiraiBot::SleepSeconds(10);
 	}
-	cout << "MocliaMusic正在运行中……" << endl;
+
+	cout << "[MocliaMusic] MocliaMusic正在运行中……" << endl;
+
+	thread CommandSystem(CommandSys);
+	CommandSystem.detach();
 
 	map<GID_t, bool> groups;
 
@@ -112,6 +154,7 @@ int main()
 						else
 						{
 							gm.Reply(MessageChain().App(app));
+							cout << "[MocliaMusic]" << gm.Sender.Group.Name << "点歌：" << MusicName << endl;
 						}
 						return;
 					}
