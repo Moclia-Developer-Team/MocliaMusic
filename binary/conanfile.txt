@@ -1,0 +1,6 @@
+[requires]
+cpr/1.5.0
+rapidjson/1.1.0
+
+[generators]
+cmake
