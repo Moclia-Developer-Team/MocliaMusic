@@ -30,6 +30,8 @@
  *	初次控制台配置
  */
 
+#define _HAS_STD_BYTE 0
+
 #include <iostream>
 #include <map>
 #include <string>
