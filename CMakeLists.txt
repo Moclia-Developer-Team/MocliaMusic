@@ -15,6 +15,7 @@ set(MIRAI_CPP_BUILD_EXAMPLES OFF CACHE BOOL "Build examples" FORCE)
 find_package(mirai-cpp)
 find_package(rapidjson)
 find_package(cpr)
+find_package(SQLiteCpp)
 
 # 源码以 UTF-8 编码保存，使用 MSVC 编译器时需要加编译参数提供支持
 if(MSVC)
@@ -34,6 +35,7 @@ include_directories(include)
 target_link_libraries(${PROJECT_NAME} PRIVATE mirai-cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE cpr)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${RAPIDJSON_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PRIVATE SQLiteCpp)
 # 使用 mirai-cpp 静态库
 target_compile_definitions(${PROJECT_NAME} PRIVATE MIRAICPP_STATICLIB)
 # gcc 要连接 pthread

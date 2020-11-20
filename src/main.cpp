@@ -30,13 +30,13 @@
  *	初次控制台配置
  */
 
-#define _HAS_STD_BYTE 0
-
 #include <iostream>
 #include <map>
 #include <string>
 #include <sstream>
 #include <thread>
+#include <regex>
+#include <fstream>
 
 #include <mirai/mirai.h>
 
@@ -45,6 +45,7 @@
 #include "HttpProcess.h"
 #include "NeteaseMusicProcess.h"
 #include "GeneralMessage.h"
+#include "Configure.h"
 
 using namespace std;
 using namespace Cyan;
@@ -90,17 +91,37 @@ void CommandSys()
 
 int main()
 {
-	JsonConfigReader();
-	string host, auth;
-	int64_t port,qqNum;
+	FILE* DBSearch = fopen("./BotConfig.mocdb", "rb");
+	if (!DBSearch)
+	{
+		MocliaMusic::dbConnect();
+	}
+	//JsonConfigReader();
+	string host, auth, ip_addr,port_temp;
+	int64_t port, qqNum;
+
 #if defined(WIN32) || defined(_WIN32)
 	// 切换代码页，让 CMD 可以显示 UTF-8 字符
-	system("chcp 65001");
+	system("chcp 65001 && cls");
 #endif
-	host = ConfigReaderString("/host");
-	port = ConfigReaderInt( "/port");
-	qqNum = ConfigReaderInt("/qq");
-	auth = ConfigReaderString("/authKey");
+	try
+	{
+		ip_addr = MocliaMusic::readconfig("ip_addr");
+		regex extract(("([\\S\\s]*):([0-9]*)"),
+			regex_constants::ECMAScript | regex_constants::icase);
+		smatch result;
+		regex_match(ip_addr, result, extract);
+		host = result[1];
+		port_temp = result[2];
+		port = atoi(port_temp.c_str());
+		qqNum = atoi(MocliaMusic::readconfig("bot_id").c_str());
+		auth = MocliaMusic::readconfig("auth");
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}
+
 	QQ_t qqNum_qq = QQ_t(qqNum);
 
 	MiraiBot bot(host, port);
