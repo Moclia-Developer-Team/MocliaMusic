@@ -27,8 +27,12 @@
  * todo:
  *	酷狗点歌
  *	QQ点歌
- *	初次控制台配置
  */
+
+#if defined(WIN32) || defined(_WIN32)
+//#include <windows.h>
+#endif
+
 
 #include <iostream>
 #include <map>
@@ -55,10 +59,11 @@ using namespace rapidjson;
 string input;
 int CommandNum;
 
+// 分离式指令系统
 void CommandSys()
 {
 	map<string, int> CommandType = {
-		{"q",1},
+		{"stop",1},
 		{"about",2}
 	};
 	while (true)
@@ -69,10 +74,12 @@ void CommandSys()
 			CommandNum = CommandType[input];
 			switch (CommandNum)
 			{
+			// 结束运行程序
 			case 1:
 				cout << "[MocliaMusic] 已结束进程" << endl;
 				exit(0);
 				break;
+			// 控制台帮助
 			case 2:
 				cout << BotHelp() << endl;
 				break;
@@ -91,22 +98,27 @@ void CommandSys()
 
 int main()
 {
-	FILE* DBSearch = fopen("./BotConfig.mocdb", "rb");
+	// 配置文件是否存在检查
+	FILE* DBSearch = fopen("./BotConfig.db", "rb");
 	if (!DBSearch)
 	{
-		MocliaMusic::dbConnect();
+		MocliaMusic::configure();
 	}
-	//JsonConfigReader();
 	string host, auth, ip_addr,port_temp;
 	int64_t port, qqNum;
 
 #if defined(WIN32) || defined(_WIN32)
 	// 切换代码页，让 CMD 可以显示 UTF-8 字符
 	system("chcp 65001 && cls");
+	// 获取标准输出屏幕缓冲区句柄
+	//HANDLE stdh = GetStdHandle(STD_OUTPUT_HANDLE);
+	// 设置标题
+	//SetConsoleTitle("MocliaMusic");
 #endif
 	try
 	{
-		ip_addr = MocliaMusic::readconfig("ip_addr");
+		ip_addr = MocliaMusic::readconfig(3);
+		// 正则分离ip地址和端口
 		regex extract(("([\\S\\s]*):([0-9]*)"),
 			regex_constants::ECMAScript | regex_constants::icase);
 		smatch result;
@@ -114,12 +126,14 @@ int main()
 		host = result[1];
 		port_temp = result[2];
 		port = atoi(port_temp.c_str());
-		qqNum = atoi(MocliaMusic::readconfig("bot_id").c_str());
-		auth = MocliaMusic::readconfig("auth");
+		// 机器人QQ号
+		qqNum = atoi(MocliaMusic::readconfig(1).c_str());
+		// 注册密钥
+		auth = MocliaMusic::readconfig(2);
 	}
 	catch (const std::exception& ex)
 	{
-		cout << ex.what() << endl;
+		cout << "[MocliaMusic] " << ex.what() << endl;
 	}
 
 	QQ_t qqNum_qq = QQ_t(qqNum);
@@ -134,11 +148,24 @@ int main()
 		}
 		catch (const std::exception& ex)
 		{
-			cout << ex.what() << endl;
+			cout << "[MocliaMusic] " << ex.what() << endl;
 		}
 		MiraiBot::SleepSeconds(10);
 	}
-
+//#if defined(WIN32) || defined(_WIN32)
+	cout << R"(
+==============================================================================
+ 	     __  __            _ _         __  __           _
+ 	    |  \/  |          | (_)       |  \/  |         (_)
+ 	    | \  / | ___   ___| |_  __ _  | \  / |_   _ ___ _  ___
+ 	    | |\/| |/ _ \ / __| | |/ _` | | |\/| | | | / __| |/ __|
+ 	    | |  | | (_) | (__| | | (_| | | |  | | |_| \__ | | (__
+ 	    |_|  |_|\___/ \___|_|_|\__,_| |_|  |_|\__,_|___|_|\___|
+ 
+ =============================================================================)"
+		<< endl;
+	//SetConsoleTextAttribute(stdh,FOREGROUND_BLUE);
+//#endif
 	cout << "[MocliaMusic] MocliaMusic正在运行中……" << endl;
 
 	thread CommandSystem(CommandSys);
@@ -191,7 +218,7 @@ int main()
 			}
 			catch (const std::exception& ex)
 			{
-				cout << ex.what() << endl;
+				cout << "[MocliaMusic] " << ex.what() << endl;
 			}
 		});
 	bot.On<FriendMessage>(
@@ -232,7 +259,7 @@ int main()
 			}
 			catch (const std::exception& ex)
 			{
-				cout << ex.what() << endl;
+				cout << "[MocliaMusic] " << ex.what() << endl;
 			}
 		});
 
@@ -274,7 +301,7 @@ int main()
 			}
 			catch (const std::exception& ex)
 			{
-				cout << ex.what() << endl;
+				cout << "[MocliaMusic] " << ex.what() << endl;
 			}
 		});
 

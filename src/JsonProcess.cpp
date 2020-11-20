@@ -43,59 +43,6 @@
 using namespace std;
 using namespace rapidjson;
 
-Document BotConfigDoc; // 插件设置
-Document GroupConfigDoc; // 群设置
-
-void JsonConfigReader()
-{
-    char* Path = "./BotConfig.json";
-#ifdef _WIN32
-    FILE* Filep = fopen(Path, "rb");
-    if (!Filep)
-    {
-        Filep = fopen(Path, "wb");
-    }
-#else
-    FILE* Filep = fopen(Path, "r");
-    if (!Filep)
-    {
-        Filep = fopen(Path, "w");
-    }
-#endif // _WIN32
-
-    char readBuffer[65536];
-    FileReadStream read(Filep, readBuffer, sizeof(readBuffer));
-    BotConfigDoc.ParseStream(read);
-
-    fclose(Filep);
-}
-
-string ConfigReaderString(char* point)
-{
-    Value* v = Pointer(point).Get(BotConfigDoc);
-    if (v == nullptr)
-    {
-        return "empty";
-    }
-    else
-    {
-        return v->GetString();
-    }
-}
-
-int ConfigReaderInt(char* IntPoint)
-{
-    Value* ReaderInt = Pointer(IntPoint).Get(BotConfigDoc);
-    if (ReaderInt == nullptr) // 如果没有读取到数据返回-1
-    {
-        return -1;
-    }
-    else
-    {
-        return ReaderInt->GetInt64();
-    }
-}
-
 // json数据处理，传出string
 string JsonGetString(const char* Json, char* Path)
 {
