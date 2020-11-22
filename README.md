@@ -4,22 +4,25 @@
 
 #### 使用说明
 
-`*MusicHelp` MocliaMusic的帮助页面。
-~网易点歌[曲名]~在网易云进行点歌
+消息端指令：  
+`*MusicHelp` MocliaMusic的帮助页面。  
+`网易点歌[曲名]`在网易云进行点歌。  
+ps:@某个机器人可以指定机器人进行点歌。  
 
-#### 运行前配置
+服务端指令：  
+`about` MocliaMusic的帮助页面。
+`stop` 结束运行。  
 
-在同目录下的BotConfig.json下填写以下内容
+#### 初次运行配置
+
 ~~~
-//在正式使用中注释必须删除。
-{
-    "host":"", //你的mirai-api-http ip地址
-    "port":, // mirai-api-http的端口号
-    "qq":10000,// 机器人qq
-    "authKey":""// mirai-api-http的authKey
-}
+// 在控制台根据提示填入以下内容：
+机器人的QQ号：如10000
+MiraiAPIHttp的ip地址和端口：如127.0.0.1:2020
+MiraiAPIHttp的Auth密码：如123456
+// 确认信息后你就可以正常使用了。
+
 ~~~
-随后双击MocliaMusic.exe运行即可。
 
 #### 编译配置
 
@@ -28,6 +31,7 @@
 > cpr  
 > RapidJson  
 > SQLiteCpp  
+> fmt
 
 请自行确认系统内是否有相关第三方库，否则将无法编译。
 
