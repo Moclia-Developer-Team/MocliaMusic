@@ -27,18 +27,26 @@
  * 功能：配置文件处理
  * todo：配置文件验证
  */
+
 #include <memory>
 #include <iostream>
 #include <string>
 #include <map>
 #include <regex>
+#include <ctime>
 
 #include <SQLiteCpp/SQLiteCpp.h>
+#include <fmt/core.h>
+#include <fmt/color.h>
+#include <fmt/chrono.h>
 
 #include <Configure.h>
 
 using namespace std;
 using namespace SQLite;
+using namespace std::literals::chrono_literals;
+
+time_t ConTime;
 
 namespace MocliaMusic
 {
@@ -53,7 +61,9 @@ namespace MocliaMusic
 			string host = "127.0.0.1:8080", auth = "12345678", confirm = "y";
 
 			// 初期配置
-			cout << R"(
+			fmt::print(fg(fmt::color::light_sky_blue),
+				"{}\n",
+				R"(
 ==============================================================================
  	     __  __            _ _         __  __           _
  	    |  \/  |          | (_)       |  \/  |         (_)
@@ -63,8 +73,10 @@ namespace MocliaMusic
  	    |_|  |_|\___/ \___|_|_|\__,_| |_|  |_|\__,_|___|_|\___|
  
  =============================================================================)"
-				<< endl;
-			cout << "欢迎使用MocliaMusic，请根据引导进行初始化配置。" << endl;
+			);
+			
+			fmt::print(fg(fmt::color::aqua),
+				"欢迎使用MocliaMusic，请根据引导进行初始化配置。\n");
 			cout << "请输入您的机器人QQ账号：";
 			cin >> qq;
 			cout << "请输入您的MiraiAPIHttp地址，例如(127.0.0.1:8080)：";
@@ -109,7 +121,10 @@ namespace MocliaMusic
 		}
 		catch (const std::exception& ex)
 		{
-			cout << "[MocliaMusic] " << ex.what() << endl;
+			ConTime = std::time(nullptr);
+			fmt::print(fg(fmt::color::red),
+				"[MocliaMusic {:%H:%M:%S} &err] {}\n",
+				*localtime(&ConTime), ex.what());
 		}
 
 	}
@@ -131,7 +146,10 @@ namespace MocliaMusic
 		}
 		catch (const std::exception& ex)
 		{
-			cout << "[MocliaMusic] " << ex.what() << endl;
+			ConTime = std::time(nullptr);
+			fmt::print(fg(fmt::color::red),
+				"[MocliaMusic {:%H:%M:%S} &err] {}\n",
+				*localtime(&ConTime), ex.what());
 		}
 	}
 }

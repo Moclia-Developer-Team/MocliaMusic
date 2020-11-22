@@ -26,13 +26,21 @@
  * -----------------------------------------------------------------------------
  * 功能：点歌的json请求
  */
+
 #include <iostream>
 #include <string>
+#include <ctime>
 
 #include <cpr/cpr.h>
+#include <fmt/core.h>
+#include <fmt/color.h>
+#include <fmt/chrono.h>
 
 using namespace std;
 using namespace cpr;
+using namespace std::literals::chrono_literals;
+
+time_t HttpTime;
 
 //暂时用不到Get
 /*string HttpGet(string URL)
@@ -57,6 +65,9 @@ string HttpPost(string URL, string PostBody)
 	}
 	catch (const std::exception& ex)
 	{
-		cout << ex.what() << endl;
+		HttpTime = time(nullptr);
+		fmt::print(fg(fmt::color::red),
+			"[MocliaMusic {:%H:%M:%S} &err] {}\n",
+			*localtime(&HttpTime), ex.what());
 	}
 }

@@ -4,7 +4,7 @@ cmake_minimum_required (VERSION 3.14)
 # 项目名称
 project(MocliaMusic)
 # 设置项目的 C++ 标准
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 # 设置windows下的静态编译
 if(MSVC)
@@ -19,6 +19,7 @@ find_package(mirai-cpp)
 find_package(RapidJSON)
 find_package(cpr)
 find_package(SQLiteCpp)
+find_package(fmt)
 
 # 源码以 UTF-8 编码保存，使用 MSVC 编译器时需要加编译参数提供支持
 if(MSVC)
@@ -42,8 +43,12 @@ target_link_libraries(${PROJECT_NAME} PRIVATE mirai-cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE cpr)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${RAPIDJSON_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PRIVATE SQLiteCpp)
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 # 使用 mirai-cpp 静态库
 target_compile_definitions(${PROJECT_NAME} PRIVATE MIRAICPP_STATICLIB)
+if(MSVC)
+target_compile_definitions(${PROJECT_NAME} PRIVATE _HAS_STD_BYTE=0)
+endif(MSVC)
 # gcc 要连接 pthread
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 target_link_libraries(${PROJECT_NAME} PRIVATE pthread)

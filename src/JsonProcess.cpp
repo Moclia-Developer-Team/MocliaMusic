@@ -27,6 +27,8 @@
  * 功能：点歌的json处理
  * todo：配置文件自动生成，自动写入。
  */
+#undef byte
+
 #include <iostream>
 #include <string>
 #include <map>

@@ -29,20 +29,18 @@
  *	QQ点歌
  */
 
-#if defined(WIN32) || defined(_WIN32)
-//#include <windows.h>
-#endif
-
-
 #include <iostream>
 #include <map>
 #include <string>
 #include <sstream>
 #include <thread>
 #include <regex>
-#include <fstream>
+#include <ctime>
 
 #include <mirai/mirai.h>
+#include <fmt/core.h>
+#include <fmt/color.h>
+#include <fmt/chrono.h>
 
 #include "GlobalHeader.h"
 #include "JsonProcess.h"
@@ -55,9 +53,11 @@ using namespace std;
 using namespace Cyan;
 using namespace cpr;
 using namespace rapidjson;
+using namespace std::literals::chrono_literals;
 
 string input;
 int CommandNum;
+time_t MainTime;
 
 // 分离式指令系统
 void CommandSys()
@@ -71,26 +71,37 @@ void CommandSys()
 		try
 		{
 			cin >> input;
+			MainTime = std::time(nullptr);
 			CommandNum = CommandType[input];
 			switch (CommandNum)
 			{
 			// 结束运行程序
 			case 1:
-				cout << "[MocliaMusic] 已结束进程" << endl;
+				fmt::print(fg(fmt::color::aqua),
+					"[MocliaMusic {:%H:%M:%S} &stop] 已结束进程\n",
+					*localtime(&MainTime));
 				exit(0);
 				break;
 			// 控制台帮助
 			case 2:
-				cout << BotHelp() << endl;
+				fmt::print(fg(fmt::color::light_sea_green),
+					"{}\n",
+					BotHelp());
 				break;
+			// 指令错误回复
 			default:
-				cout << "[MocliaMusic] 指令错误" << endl;
+				fmt::print(fg(fmt::color::red), 
+					"[MocliaMusic {:%H:%M:%S} &err] 指令错误\n", 
+					*localtime(&MainTime));
 				break;
 			}
 		}
 		catch (const std::exception& ex)
 		{
-			cout << "[MocliaMusic] " << ex.what() << endl;
+			MainTime = std::time(nullptr);
+			fmt::print(fg(fmt::color::red),
+				"[MocliaMusic {:%H:%M:%S} &err] {}\n",
+				*localtime(&MainTime), ex.what());
 		}
 		
 	}
@@ -98,6 +109,7 @@ void CommandSys()
 
 int main()
 {
+	MainTime = std::time(nullptr);
 	// 配置文件是否存在检查
 	FILE* DBSearch = fopen("./BotConfig.db", "rb");
 	if (!DBSearch)
@@ -110,10 +122,8 @@ int main()
 #if defined(WIN32) || defined(_WIN32)
 	// 切换代码页，让 CMD 可以显示 UTF-8 字符
 	system("chcp 65001 && cls");
-	// 获取标准输出屏幕缓冲区句柄
-	//HANDLE stdh = GetStdHandle(STD_OUTPUT_HANDLE);
 	// 设置标题
-	//SetConsoleTitle("MocliaMusic");
+	SetConsoleTitle("MocliaMusic");
 #endif
 	try
 	{
@@ -133,7 +143,10 @@ int main()
 	}
 	catch (const std::exception& ex)
 	{
-		cout << "[MocliaMusic] " << ex.what() << endl;
+		MainTime = std::time(nullptr);
+		fmt::print(fg(fmt::color::red),
+			"[MocliaMusic {:%H:%M:%S} &err] {}\n",
+			*localtime(&MainTime), ex.what());
 	}
 
 	QQ_t qqNum_qq = QQ_t(qqNum);
@@ -148,12 +161,17 @@ int main()
 		}
 		catch (const std::exception& ex)
 		{
-			cout << "[MocliaMusic] " << ex.what() << endl;
+			MainTime = std::time(nullptr);
+			fmt::print(fg(fmt::color::red),
+				"[MocliaMusic {:%H:%M:%S} &err] {}\n",
+				*localtime(&MainTime), ex.what());
 		}
 		MiraiBot::SleepSeconds(10);
 	}
-//#if defined(WIN32) || defined(_WIN32)
-	cout << R"(
+
+	fmt::print(fg(fmt::color::light_sky_blue),
+		"{}\n",
+		R"(
 ==============================================================================
  	     __  __            _ _         __  __           _
  	    |  \/  |          | (_)       |  \/  |         (_)
@@ -163,10 +181,11 @@ int main()
  	    |_|  |_|\___/ \___|_|_|\__,_| |_|  |_|\__,_|___|_|\___|
  
  =============================================================================)"
-		<< endl;
-	//SetConsoleTextAttribute(stdh,FOREGROUND_BLUE);
-//#endif
-	cout << "[MocliaMusic] MocliaMusic正在运行中……" << endl;
+	);
+
+	fmt::print(fg(fmt::color::aqua),
+		"[MocliaMusic {:%H:%M:%S} &startup] MocliaMusic正在运行中……\n",
+		*localtime(&MainTime));
 
 	thread CommandSystem(CommandSys);
 	CommandSystem.detach();
@@ -199,12 +218,18 @@ int main()
 						string app = NeteaseMusic(MusicName);
 						if (app == "Music Not Found")
 						{
-							gm.Reply(MessageChain().Plain("云村中没有这首歌哟。"));
+							gm.Reply(
+								MessageChain().Plain("云村中没有这首歌哟。"));
 						}
 						else
 						{
 							gm.Reply(MessageChain().App(app));
-							cout << "[MocliaMusic]" << gm.Sender.Group.Name << "点歌：" << MusicName << endl;
+							MainTime = std::time(nullptr);
+							fmt::print(fg(fmt::color::spring_green),
+								"[MocliaMusic {:%H:%M:%S} &group] {}({})点歌：{}\n"
+								, *localtime(&MainTime),
+								gm.Sender.Group.Name, gm.Sender.Group.GID,
+								MusicName);
 						}
 						return;
 					}
@@ -218,7 +243,10 @@ int main()
 			}
 			catch (const std::exception& ex)
 			{
-				cout << "[MocliaMusic] " << ex.what() << endl;
+				MainTime = std::time(nullptr);
+				fmt::print(fg(fmt::color::red),
+					"[MocliaMusic {:%H:%M:%S} &err] {}\n",
+					*localtime(&MainTime), ex.what());
 			}
 		});
 	bot.On<FriendMessage>(
@@ -246,6 +274,12 @@ int main()
 						else
 						{
 							fm.Reply(MessageChain().App(app));
+							MainTime = std::time(nullptr);
+							fmt::print(fg(fmt::color::chocolate),
+								"[MocliaMusic {:%H:%M:%S} &friend] {}({})点歌：{}\n"
+								, *localtime(&MainTime),
+								fm.Sender.NickName, fm.Sender.QQ,
+								MusicName);
 						}
 						return;
 					}
@@ -259,7 +293,10 @@ int main()
 			}
 			catch (const std::exception& ex)
 			{
-				cout << "[MocliaMusic] " << ex.what() << endl;
+				MainTime = std::time(nullptr);
+				fmt::print(fg(fmt::color::red),
+					"[MocliaMusic {:%H:%M:%S} &err] {}\n",
+					*localtime(&MainTime), ex.what());
 			}
 		});
 
@@ -288,6 +325,12 @@ int main()
 						else
 						{
 							tm.Reply(MessageChain().App(app));
+							MainTime = std::time(nullptr);
+							fmt::print(fg(fmt::color::navajo_white),
+								"[MocliaMusic {:%H:%M:%S} &temp] {}({})点歌：{}\n"
+								, *localtime(&MainTime),
+								tm.Sender.MemberName, tm.Sender.QQ,
+								MusicName);
 						}
 						return;
 					}
@@ -301,7 +344,10 @@ int main()
 			}
 			catch (const std::exception& ex)
 			{
-				cout << "[MocliaMusic] " << ex.what() << endl;
+				MainTime = std::time(nullptr);
+				fmt::print(fg(fmt::color::red),
+					"[MocliaMusic {:%H:%M:%S} &err] {}\n",
+					*localtime(&MainTime), ex.what());
 			}
 		});
 

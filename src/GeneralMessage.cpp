@@ -28,6 +28,7 @@
  *	酷狗点歌
  *	QQ点歌
  */
+
 #include <iostream>
 #include <string>
 #include <map>
