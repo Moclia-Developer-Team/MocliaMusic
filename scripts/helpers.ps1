@@ -3,7 +3,7 @@ $projectDir = Split-Path $PSScriptRoot -Parent
 
 $vcpkgRoot = if ($env:VCPKG_ROOT) { $env:VCPKG_ROOT } else { "$projectDir\vcpkg" }
 $vcpkgCmd = "$vcpkgRoot\vcpkg.exe"
-$vcpkgTriplet = if ($env:VCPKG_TRIPLET) { $env:VCPKG_TRIPLET } else { "x86-windows-static-custom" }
+$vcpkgTriplet = if ($env:VCPKG_TRIPLET) { $env:VCPKG_TRIPLET } else { "x86-windows-static" }
 
 # 辅助函数
 
