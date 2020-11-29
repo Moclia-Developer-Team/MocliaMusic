@@ -8,7 +8,7 @@
  *
  *==============================================================================
  *	Moclia Music for Mirai-api-http
- *	Copyright (C) 2020 星翛-STASWIT
+ *	Copyright (C) 2020 鏄熺繘-STASWIT
  *  for Moclia Project & Moclia-Development-Team
  * -----------------------------------------------------------------------------
  *	This program is free software: you can redistribute it and/or modify it
@@ -24,7 +24,7 @@
  *	You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * -----------------------------------------------------------------------------
- * 功能：网易云音乐点歌模块整合
+ * 鍔熻兘锛氱綉鏄撲簯闊充箰鐐规瓕妯″潡鏁村悎
  */
 #undef byte
 
@@ -49,34 +49,34 @@ string NeteaseMusic(string MuseName)
 	}
 	else
 	{
-		// 音乐名称
+		// 闊充箰鍚嶇О
 		string UpMusicName = JsonGetString(Json, "/result/songs/0/name");
 		const char* MusicName = UpMusicName.c_str();
 
-		// 歌手
+		// 姝屾墜
 		string MusicArtist = JsonGetString(Json, "/result/songs/0/artists/0/name");
 
-		// 说明内容
+		// 璇存槑鍐呭
 		string UpDesc = MusicArtist + " - " + UpMusicName;
 		const char* Desc = UpDesc.c_str();
 
-		// 音乐照片
+		// 闊充箰鐓х墖
 		string UpPreview = JsonGetString(Json, "/result/songs/0/album/picUrl");
 		const char* Preview = UpPreview.c_str();
 
-		// 音乐id
+		// 闊充箰id
 		int MusicID = JsonGetInt(Json, "/result/songs/0/id");
 
-		// 跳转地址
+		// 璺宠浆鍦板潃
 		string UpJumpURL = "https://music.163.com/#/song?id=" + to_string(MusicID);
 		const char* JumpURL = UpJumpURL.c_str();
 
-		// 播放地址
+		// 鎾斁鍦板潃
 		string UpMusicURL = "http://music.163.com/song/media/outer/url?id=" +
 			to_string(MusicID) + ".mp3";
 		const char* MusicURL = UpMusicURL.c_str();
 
-		// 返回json
+		// 杩斿洖json
 		string ReturnJson = MusicJsonChange(MusicJson, Desc, JumpURL, MusicURL,
 			Preview, MusicName, 1);
 		return ReturnJson;

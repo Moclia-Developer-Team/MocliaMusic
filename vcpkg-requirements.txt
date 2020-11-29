@@ -1,0 +1,10 @@
+sqlite3:x64-windows-static
+sqlite3:x86-windows-static
+sqlitecpp:x64-windows-static
+sqlitecpp:x86-windows-static
+cpr:x64-windows-static
+cpr:x86-windows-static
+rapidjson:x64-windows-static
+rapidjson:x86-windows-static
+fmt:x64-windows-static
+fmt:x86-windows-static

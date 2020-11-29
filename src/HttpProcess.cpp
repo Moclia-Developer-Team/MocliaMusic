@@ -8,7 +8,7 @@
  *
  *==============================================================================
  *	Moclia Music for Mirai-api-http
- *	Copyright (C) 2020 星翛-STASWIT
+ *	Copyright (C) 2020 鏄熺繘-STASWIT
  *  for Moclia Project & Moclia-Development-Team
  * -----------------------------------------------------------------------------
  *	This program is free software: you can redistribute it and/or modify it
@@ -24,7 +24,7 @@
  *	You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * -----------------------------------------------------------------------------
- * 功能：点歌的json请求
+ * 鍔熻兘锛氱偣姝岀殑json璇锋眰
  */
 
 #include <iostream>
@@ -42,7 +42,7 @@ using namespace std::literals::chrono_literals;
 
 time_t HttpTime;
 
-//暂时用不到Get
+//鏆傛椂鐢ㄤ笉鍒癎et
 /*string HttpGet(string URL)
 {
 	try

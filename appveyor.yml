@@ -1,0 +1,15 @@
+version: 2.0.{build}
+skip_non_tags: true
+image: Visual Studio 2019
+configuration: Release
+platform:
+- x86
+- x64
+environment:
+  VCPKG_ROOT: C:\tools\vcpkg
+install:
+- pwsh: .\scripts\prepare.ps1
+build_script:
+- pwsh: >-
+    .\scripts\generate.ps1 %CONFIGURATION%
+    .\scripts\build.ps1 %CONFIGURATION%

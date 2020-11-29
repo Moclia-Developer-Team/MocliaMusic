@@ -41,7 +41,7 @@ using namespace std;
 string BotHelp()
 {
 	// 版本号
-	const string MocMuse_Ver = "2.0.0 Release ";
+	const string MocMuse_Ver = "2.0.1 Release ";
 	// 标头信息
 	const string MocMuse_Info = "MocliaMusic by STASWIT Version"
 		+ MocMuse_Ver;

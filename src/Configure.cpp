@@ -8,7 +8,7 @@
  *
  *==============================================================================
  *	Moclia Music for Mirai-api-http
- *	Copyright (C) 2020 ĞÇÁ›-STASWIT
+ *	Copyright (C) 2020 æ˜Ÿç¿›-STASWIT
  *  for Moclia Project & Moclia-Development-Team
  * -----------------------------------------------------------------------------
  *	This program is free software: you can redistribute it and/or modify it
@@ -24,8 +24,8 @@
  *	You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * -----------------------------------------------------------------------------
- * ¹¦ÄÜ£ºÅäÖÃÎÄ¼ş´¦Àí
- * todo£ºÅäÖÃÎÄ¼şÑéÖ¤
+ * åŠŸèƒ½ï¼šé…ç½®æ–‡ä»¶å¤„ç†
+ * todoï¼šé…ç½®æ–‡ä»¶éªŒè¯
  */
 
 #include <memory>
@@ -56,11 +56,11 @@ namespace MocliaMusic
 	{
 		try
 		{
-			// ´´½¨±ØÒª±äÁ¿
+			// åˆ›å»ºå¿…è¦å˜é‡
 			int qq = 10000;
 			string host = "127.0.0.1:8080", auth = "12345678", confirm = "y";
 
-			// ³õÆÚÅäÖÃ
+			// åˆæœŸé…ç½®
 			fmt::print(fg(fmt::color::light_sky_blue),
 				"{}\n",
 				R"(
@@ -76,46 +76,46 @@ namespace MocliaMusic
 			);
 			
 			fmt::print(fg(fmt::color::aqua),
-				"»¶Ó­Ê¹ÓÃMocliaMusic£¬Çë¸ù¾İÒıµ¼½øĞĞ³õÊ¼»¯ÅäÖÃ¡£\n");
-			cout << "ÇëÊäÈëÄúµÄ»úÆ÷ÈËQQÕËºÅ£º";
+				"æ¬¢è¿ä½¿ç”¨MocliaMusicï¼Œè¯·æ ¹æ®å¼•å¯¼è¿›è¡Œåˆå§‹åŒ–é…ç½®ã€‚\n");
+			cout << "è¯·è¾“å…¥æ‚¨çš„æœºå™¨äººQQè´¦å·ï¼š";
 			cin >> qq;
-			cout << "ÇëÊäÈëÄúµÄMiraiAPIHttpµØÖ·£¬ÀıÈç(127.0.0.1:8080)£º";
+			cout << "è¯·è¾“å…¥æ‚¨çš„MiraiAPIHttpåœ°å€ï¼Œä¾‹å¦‚(127.0.0.1:8080)ï¼š";
 			cin >> host;
-			cout << "ÇëÊäÈëÄúµÄMiraiAPIHTTP AuthKey£º";
+			cout << "è¯·è¾“å…¥æ‚¨çš„MiraiAPIHTTP AuthKeyï¼š";
 			cin >> auth;
-			cout << "ÇëÈ·ÈÏÄúµÄÁ´½ÓĞÅÏ¢£º" << endl
-				<< "»úÆ÷ÈËÕËºÅ£º"
+			cout << "è¯·ç¡®è®¤æ‚¨çš„é“¾æ¥ä¿¡æ¯ï¼š" << endl
+				<< "æœºå™¨äººè´¦å·ï¼š"
 				<< qq << endl
-				<< "Á¬½ÓµØÖ·£º"
+				<< "è¿æ¥åœ°å€ï¼š"
 				<< host << endl
-				<< "AuthKey£º"
+				<< "AuthKeyï¼š"
 				<< auth << endl
-				<< "È·ÈÏĞ´Èë£¿(y/n)£º";
+				<< "ç¡®è®¤å†™å…¥ï¼Ÿ(y/n)ï¼š";
 			cin >> confirm;
 
 
 
 			if (confirm == "y")
 			{
-				// Á´½ÓÊı¾İ¿â
+				// é“¾æ¥æ•°æ®åº“
 				db = nullptr;
 				db = std::make_unique<SQLite::Database>("./BotConfig.db", OPEN_CREATE | OPEN_READWRITE);
 				Transaction Tran(*db);
-				// ´´½¨Êı¾İ±í
+				// åˆ›å»ºæ•°æ®è¡¨
 				db->exec("CREATE TABLE IF NOT EXISTS Program (number INTEAGER, bot_id INTEAGER, auth TEXT, ip_addr TEXT)");
 				db->exec("CREATE TABLE IF NOT EXISTS Groups (group_id INTEAGER, bot_on BOOLEAN, default_service TEXT)");
-				// Ğ´ÈëÊı¾İ
+				// å†™å…¥æ•°æ®
 				Statement st(*db, "INSERT INTO Program (number, bot_id, auth, ip_addr) VALUES (1, ?, ?, ?)");
 				st.bind(1, qq);
 				st.bind(2, auth);
 				st.bind(3, host);
 				st.exec();
-				// È·ÈÏ¸ü¸Ä
+				// ç¡®è®¤æ›´æ”¹
 				Tran.commit();
 			}
 			else
 			{
-				// ÍË³ö
+				// é€€å‡º
 				exit(0);
 			}
 		}
@@ -133,10 +133,10 @@ namespace MocliaMusic
 	{
 		try
 		{
-			// Á¬½ÓÊı¾İ¿â
+			// è¿æ¥æ•°æ®åº“
 			db = nullptr;
 			db = std::make_unique<SQLite::Database>("./BotConfig.db");
-			// ²éÕÒÄÚÈİ
+			// æŸ¥æ‰¾å†…å®¹
 			Statement ReadSt(*db, "SELECT * FROM Program WHERE number = 1");
 			if (ReadSt.executeStep())
 			{
