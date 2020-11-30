@@ -15,10 +15,7 @@ for:
     - pwsh: .\scripts\prepare_x64.ps1
 
     build_script:
-    - pwsh: mkdir build_x64
-    - pwsh: cd .\build_x64
-    - pwsh: cmake -G "Visual Studio 16 2019" -A x64  -DCMAKE_CONFIGURATION_TYPES:STRING="Release" -DCMAKE_INSTALL_PREFIX:PATH="C:\projects\mocliamusic\out\install\x64-Release" -DVCPKG_TARGET_TRIPLET=x64-windows-static  -DCMAKE_TOOLCHAIN_FILE="C:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake" "C:\projects\mocliamusic"
-    - pwsh: cmake --build . --config "Release" --target "MocliaMusic"
+    - pwsh:.\scripts\build_x64.ps1
 
 -
     matrix:
