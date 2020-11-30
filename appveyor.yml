@@ -12,15 +12,7 @@ for:
         only:
             - platform: x64
     install:
-    - pwsh: git clone https://github.com/microsoft/vcpkg.git C:\tools\vcpkg
-    - pwsh: cd C:\tools
-    - pwsh: git clone https://github.com/cyanray/mirai-cpp-vcpkg-port.git
-    - pwsh: cd mirai-cpp-vcpkg-port
-    - pwsh: copy -r C:\tools\mirai-cpp-vcpkg-port\mirai-cpp\ C:\tools\vcpkg\ports\mirai-cpp\
-    - pwsh: cd C:\tools\vcpkg
-    - pwsh: .\bootstrap-vcpkg.bat
-    - pwsh: .\vcpkg integrate install
-    - pwsh: .\vcpkg install cpr:x64-windows-static rapidjson:x64-windows-static fmt:x64-windows-static sqlitecpp:x64-windows-static sqlite3:x64-windows-static mirai-cpp:x64-windows-static
+    - pwsh: .\scripts\prepare_x64.ps1
 
     build_script:
     - pwsh: mkdir build_x64
