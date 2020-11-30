@@ -2,14 +2,25 @@ version: 2.0.{build}
 skip_non_tags: true
 image: Visual Studio 2019
 configuration: Release
-platform:
-- x86
-- x64
-environment:
-  VCPKG_ROOT: C:\tools\vcpkg
+platform: x64
 install:
-- pwsh: .\scripts\prepare.ps1
-build_script:
 - pwsh: >-
-    .\scripts\generate.ps1 %CONFIGURATION%
-    .\scripts\build.ps1 %CONFIGURATION%
+    git clone https://github.com/microsoft/vcpkg.git C:\tools\vcpkg
+
+    cd C:\tools
+
+    git clone https://github.com/cyanray/mirai-cpp-vcpkg-port.git
+
+    cd mirai-cpp-vcpkg-port
+
+    copy -r ./ C:\tools\vcpkg\ports\
+
+    cd C:\tools\vcpkg
+
+    .\bootstrap-vcpkg.bat
+
+    .\vcpkg integrate install
+
+    .\vcpkg install cpr:x64-windows-static rapidjson:x64-windows-static fmt:x64-windows-static sqlitecpp:x64-windows-static sqlite3:x64-windows-static
+build_script:
+- pwsh: cmake --build -G "Visual Studio 16 2019" -A x64  -DCMAKE_CONFIGURATION_TYPES:STRING="Release" -DCMAKE_INSTALL_PREFIX:PATH="C:\projects\mocliamusic\out\install\x64-Release" -DVCPKG_TARGET_TRIPLET=x64-windows-static  -DCMAKE_TOOLCHAIN_FILE="C:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake" "C:\projects\mocliamusic"
