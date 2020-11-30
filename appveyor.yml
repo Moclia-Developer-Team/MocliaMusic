@@ -23,4 +23,7 @@ install:
 
     .\vcpkg install cpr:x64-windows-static rapidjson:x64-windows-static fmt:x64-windows-static sqlitecpp:x64-windows-static sqlite3:x64-windows-static
 build_script:
-- pwsh: cmake --build -G "Visual Studio 16 2019" -A x64  -DCMAKE_CONFIGURATION_TYPES:STRING="Release" -DCMAKE_INSTALL_PREFIX:PATH="C:\projects\mocliamusic\out\install\x64-Release" -DVCPKG_TARGET_TRIPLET=x64-windows-static  -DCMAKE_TOOLCHAIN_FILE="C:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake" "C:\projects\mocliamusic"
+- pwsh: >-
+    cmake -G "Visual Studio 16 2019" -A x64  -DCMAKE_CONFIGURATION_TYPES:STRING="Release" -DCMAKE_INSTALL_PREFIX:PATH="C:\projects\mocliamusic\out\install\x64-Release" -DVCPKG_TARGET_TRIPLET=x64-windows-static  -DCMAKE_TOOLCHAIN_FILE="C:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake" "C:\projects\mocliamusic"
+
+    cmake --build . --config "Release" --target "MocliaMusic"
