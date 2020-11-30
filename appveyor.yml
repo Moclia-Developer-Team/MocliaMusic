@@ -13,7 +13,7 @@ install:
 
     cd mirai-cpp-vcpkg-port
 
-    copy -r ./ C:\tools\vcpkg\ports\
+    copy -r .\mirai-cpp\ C:\tools\vcpkg\ports\mirai-cpp\
 
     cd C:\tools\vcpkg
 
