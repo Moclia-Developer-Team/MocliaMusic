@@ -16,7 +16,7 @@ for:
     - pwsh: cd C:\tools
     - pwsh: git clone https://github.com/cyanray/mirai-cpp-vcpkg-port.git
     - pwsh: cd mirai-cpp-vcpkg-port
-    - pwsh: copy -r .\mirai-cpp\ C:\tools\vcpkg\ports\mirai-cpp\
+    - pwsh: copy -r C:\tools\mirai-cpp-vcpkg-port\mirai-cpp\ C:\tools\vcpkg\ports\mirai-cpp\
     - pwsh: cd C:\tools\vcpkg
     - pwsh: .\bootstrap-vcpkg.bat
     - pwsh: .\vcpkg integrate install
@@ -37,7 +37,7 @@ for:
     - pwsh: cd C:\tools
     - pwsh: git clone https://github.com/cyanray/mirai-cpp-vcpkg-port.git
     - pwsh: cd mirai-cpp-vcpkg-port
-    - pwsh: copy -r .\mirai-cpp\ C:\tools\vcpkg\ports\mirai-cpp\
+    - pwsh: copy -r C:\tools\mirai-cpp-vcpkg-port\mirai-cpp\ C:\tools\vcpkg\ports\mirai-cpp\
     - pwsh: cd C:\tools\vcpkg
     - pwsh: .\bootstrap-vcpkg.bat
     - pwsh: .\vcpkg integrate install
