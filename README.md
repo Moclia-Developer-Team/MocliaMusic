@@ -2,6 +2,8 @@
 
 > 目前仅支持网易云音乐，其他音乐服务将在未来添加。
 
+AppVeyor CI : [![Build status](https://ci.appveyor.com/api/projects/status/9b5ns0ak1dxd24ht?svg=true)](https://ci.appveyor.com/project/STASWIT/mocliamusic)
+
 #### 使用说明
 
 消息端指令：  
