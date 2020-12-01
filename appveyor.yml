@@ -12,28 +12,25 @@ for:
         only:
             - platform: x64
     install:
-    - pwsh: .\scripts\prepare_x64.ps1
+    - pwsh: .\scripts\prepare_win64.ps1
 
     build_script:
-    - pwsh: .\scripts\build_x64.ps1
+    - pwsh: .\scripts\build_win64.ps1
+
+    artifacts:
+    - path: .\build_x64\Release\MocliaMusic.exe
+      name: MocliaMusic-Windows64.exe
 
 -
     matrix:
         only:
             - platform: x86
     install:
-    - pwsh: git clone https://github.com/microsoft/vcpkg.git C:\tools\vcpkg
-    - pwsh: cd C:\tools
-    - pwsh: git clone https://github.com/cyanray/mirai-cpp-vcpkg-port.git
-    - pwsh: cd mirai-cpp-vcpkg-port
-    - pwsh: copy -r C:\tools\mirai-cpp-vcpkg-port\mirai-cpp\ C:\tools\vcpkg\ports\mirai-cpp\
-    - pwsh: cd C:\tools\vcpkg
-    - pwsh: .\bootstrap-vcpkg.bat
-    - pwsh: .\vcpkg integrate install
-    - pwsh: .\vcpkg install cpr:x86-windows-static rapidjson:x86-windows-static fmt:x86-windows-static sqlitecpp:x86-windows-static sqlite3:x86-windows-static mirai-cpp:x86-windows-static
+     - pwsh: .\scripts\prepare_win86.ps1
     
     build_script:
-    - pwsh: mkdir build_x86
-    - pwsh: cd .\build_x86
-    - pwsh: cmake -G "Visual Studio 16 2019" -A x86  -DCMAKE_CONFIGURATION_TYPES:STRING="Release" -DCMAKE_INSTALL_PREFIX:PATH="C:\projects\mocliamusic\out\install\x86-Release" -DVCPKG_TARGET_TRIPLET=x86-windows-static  -DCMAKE_TOOLCHAIN_FILE="C:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake" "C:\projects\mocliamusic"
-    - pwsh: cmake --build .. --config "Release" --target "MocliaMusic"
+    - pwsh: .\scripts\build_win86.ps1
+
+    artifacts:
+    - path: .\build_x86\Release\MocliaMusic.exe
+      name: MocliaMusic-Windows86.exe
