@@ -15,7 +15,7 @@ for:
     - pwsh: .\scripts\prepare_x64.ps1
 
     build_script:
-    - pwsh:.\scripts\build_x64.ps1
+    - pwsh: .\scripts\build_x64.ps1
 
 -
     matrix:
