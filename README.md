@@ -1,5 +1,7 @@
 ### MocliaMusic，一个基于mirai-cpp和mirai-api-http的点歌插件
 
+> archive: 因项目整合，本仓库停用，本仓库内程序功能已整合到：https://github.com/Moclia-Developer-Team/MocliaParseBot
+
 > 目前仅支持网易云音乐，其他音乐服务将在未来添加。
 
 AppVeyor CI : [![Build status](https://ci.appveyor.com/api/projects/status/9b5ns0ak1dxd24ht?svg=true)](https://ci.appveyor.com/project/STASWIT/mocliamusic)
